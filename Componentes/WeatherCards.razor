@@ -1,0 +1,23 @@
+﻿<div class="card border-dark mb-3" style="max-width:12rem;">
+    <div class="text-center">
+        <div class="card-header">@Day</div>
+        <div class="card-body">
+            <h5>@min /@max</h5>
+            <p class="card-text">@Descripcion</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Day { get; set; }
+
+    [Parameter]
+    public float min { get; set; }
+
+    [Parameter]
+    public float max { get; set; }
+
+    [Parameter]
+    public string Descripcion { get; set; }
+}
