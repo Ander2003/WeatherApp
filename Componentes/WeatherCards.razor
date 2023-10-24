@@ -4,6 +4,7 @@
         <div class="card-body">
             <h5>@min /@max</h5>
             <p class="card-text">@Descripcion</p>
+            <p class="card-text">@uv</p>
         </div>
     </div>
 </div>
@@ -17,6 +18,9 @@
 
     [Parameter]
     public float max { get; set; }
+
+    [Parameter]
+    public float uv { get; set; }
 
     [Parameter]
     public string Descripcion { get; set; }

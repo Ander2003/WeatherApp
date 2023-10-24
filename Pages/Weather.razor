@@ -22,8 +22,26 @@
     <div class="text-center">
         <p class="display-5">@city</p>
         <p class="display-1">@weatherData.current.temperature_2m ºC</p>
+        @if (@weatherData.current.is_day == 0)
+        {
+            <p class="display-5">Es de noche</p>
+        }
+        else
+        {
+            <p class="display-5">Es de dia</p>
+        }
         <p class="display-6">@WeatherCode.Convert(weatherData.daily.weathercode[0])</p>
     </div>
+
+    @if (cityData != null && cityData.results.Length > 0)
+    {
+        <ul>
+            @for (int i = 0; i < cityData.results.Length; i++)
+            {
+                <li>@cityData.results[i].formatted</li>
+            }
+        </ul>
+    }
 
     <div class="card-group">
         @for (int i = 0; i < weatherData.daily.time.Length; i++)
@@ -31,7 +49,8 @@
             <WeatherApp.Componentes.WeatherCards Day="@weatherData.daily.time[i]" 
                                                  min="@weatherData.daily.temperature_2m_min[i]" 
                                                  max="@weatherData.daily.temperature_2m_max[i]"
-                                                 Descripcion="@WeatherCode.Convert(weatherData.daily.weathercode[i])">
+                                                 Descripcion="@WeatherCode.Convert(weatherData.daily.weathercode[i])"
+                                                 uv="@weatherData.daily.uv_index_max[i]">
             </WeatherApp.Componentes.WeatherCards>
         }
     </div>
@@ -45,21 +64,23 @@
 
     WeatherModel? weatherData;
 
+    CityData cityData;
+
     async Task GetWeather()
     {
-        var cityData = await GetCityData();
+        cityData = await GetCityData();
 
         lat = cityData.results[0].lat;
         lon = cityData.results[0].lon;
 
         CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
-        weatherData = await Client.GetFromJsonAsync<WeatherModel>(EndPoints.GetWeayherEndPoint(lat, lon));
+        weatherData = await Client.GetFromJsonAsync<WeatherModel>(EndPoints.GetWeatherEndPoint(lat,lon));
         CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("es-es");
     }
 
     async Task<CityData> GetCityData()
     {
-        var cityData = await Client.GetFromJsonAsync<CityData>(EndPoints.GetGeoAplifyEndPoint(city));
-        return cityData;
+        var cityData2 = await Client.GetFromJsonAsync<CityData>(EndPoints.GetGeoApifyEndPoint(city));
+        return cityData2;
     }
 }
