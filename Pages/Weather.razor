@@ -36,9 +36,8 @@
     @if (cityData != null && cityData.results.Length > 0)
     {
         <ul>
-            @for (int i = 0; i < cityData.results.Length; i++)
-            {
-                <li>@cityData.results[i].formatted</li>
+            @foreach(Result item in cityData.results){
+                <button class="btn btn-outline-secondary" @onclick="()=>GetWeatherButton(item)">item.formatted</button>
             }
         </ul>
     }
@@ -75,6 +74,13 @@
 
         CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
         weatherData = await Client.GetFromJsonAsync<WeatherModel>(EndPoints.GetWeatherEndPoint(lat,lon));
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("es-es");
+    }
+
+    async Task GetWeatherButton(Result num)
+    {
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+        weatherData = await Client.GetFromJsonAsync<WeatherModel>(EndPoints.GetWeatherEndPoint(num.lat, num.lon));
         CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("es-es");
     }
 
